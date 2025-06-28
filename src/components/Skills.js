@@ -32,6 +32,11 @@ const ScrollableContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding: 0 60px;
+
+  @media (max-width: 768px) {
+    padding: 0 50px;
+  }
 `;
 
 const SkillsGrid = styled.div`
@@ -59,19 +64,33 @@ const SkillCategory = styled(motion.div)`
   padding: 2rem;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  min-width: 300px;
+  min-width: 320px;
+  max-width: 320px;
+  height: 400px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 
   h3 {
     font-size: 1.5rem;
     color: #fff;
     margin-bottom: 1.5rem;
     text-align: center;
+    font-weight: 600;
   }
 
   @media (max-width: 768px) {
     padding: 1.5rem;
     min-width: 280px;
+    max-width: 280px;
+    height: 380px;
+  }
+
+  @media (max-width: 480px) {
+    min-width: 260px;
+    max-width: 260px;
+    height: 360px;
+    padding: 1.2rem;
   }
 `;
 
@@ -123,11 +142,12 @@ const SkillItem = styled.div`
     margin-bottom: 0.5rem;
     color: #fff;
     font-weight: 500;
+    font-size: 0.9rem;
   }
 
   .skill-level {
     color: #888;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -162,25 +182,17 @@ const NavArrow = styled(motion.button)`
   }
 
   &.left {
-    left: -25px;
+    left: 0;
   }
 
   &.right {
-    right: -25px;
+    right: 0;
   }
 
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-    
-    &.left {
-      left: -22px;
-    }
-
-    &.right {
-      right: -22px;
-    }
   }
 `;
 
@@ -192,6 +204,7 @@ const TechnologiesSection = styled(motion.div)`
     margin-bottom: 2rem;
     color: #fff;
     font-size: 1.5rem;
+    font-weight: 600;
   }
 `;
 
@@ -277,7 +290,7 @@ function Skills() {
   const scrollSkills = (direction) => {
     const container = skillsGridRef.current;
     if (container) {
-      const scrollAmount = 320; // Card width + gap
+      const scrollAmount = 340; // Card width + gap
       const currentScroll = container.scrollLeft;
       const targetScroll = direction === 'left' 
         ? currentScroll - scrollAmount 
@@ -321,22 +334,24 @@ function Skills() {
               whileHover={{ y: -5 }}
             >
               <h3>{category.title}</h3>
-              {category.skills.map((skill, skillIndex) => (
-                <SkillItem key={skillIndex}>
-                  <div className="skill-name">
-                    <span>{skill.name}</span>
-                    <span className="skill-level">{skill.level}%</span>
-                  </div>
-                  <ProgressBar>
-                    <Progress
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1, delay: skillIndex * 0.1 }}
-                      viewport={{ once: true }}
-                    />
-                  </ProgressBar>
-                </SkillItem>
-              ))}
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                {category.skills.map((skill, skillIndex) => (
+                  <SkillItem key={skillIndex}>
+                    <div className="skill-name">
+                      <span>{skill.name}</span>
+                      <span className="skill-level">{skill.level}%</span>
+                    </div>
+                    <ProgressBar>
+                      <Progress
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.level}%` }}
+                        transition={{ duration: 1, delay: skillIndex * 0.1 }}
+                        viewport={{ once: true }}
+                      />
+                    </ProgressBar>
+                  </SkillItem>
+                ))}
+              </div>
             </SkillCategory>
           ))}
         </SkillsGrid>

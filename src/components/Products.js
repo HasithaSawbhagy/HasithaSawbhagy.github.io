@@ -32,6 +32,11 @@ const ScrollableContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding: 0 60px;
+
+  @media (max-width: 768px) {
+    padding: 0 50px;
+  }
 `;
 
 const ProductsGrid = styled.div`
@@ -61,8 +66,12 @@ const Product = styled(motion.div)`
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 350px;
+  min-width: 380px;
+  max-width: 380px;
+  height: 520px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     transform: translateY(-10px);
@@ -72,17 +81,21 @@ const Product = styled(motion.div)`
   }
 
   @media (max-width: 768px) {
-    min-width: 300px;
+    min-width: 320px;
+    max-width: 320px;
+    height: 480px;
   }
 
   @media (max-width: 480px) {
     min-width: 280px;
+    max-width: 280px;
+    height: 450px;
   }
 `;
 
 const ProductImage = styled(motion.div)`
   width: 100%;
-  height: 250px;
+  height: 200px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   display: flex;
   align-items: center;
@@ -103,24 +116,32 @@ const ProductImage = styled(motion.div)`
   }
 
   @media (max-width: 768px) {
-    height: 200px;
+    height: 160px;
     font-size: 3rem;
   }
 `;
 
 const ProductInfo = styled.div`
   padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
   }
+
+  @media (max-width: 480px) {
+    padding: 1.2rem;
+  }
 `;
 
 const ProductTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #fff;
   margin: 0 0 1rem 0;
   font-weight: 600;
+  line-height: 1.3;
 
   @media (max-width: 768px) {
     font-size: 1.3rem;
@@ -131,7 +152,8 @@ const ProductDescription = styled.p`
   color: #888;
   margin: 0 0 1.5rem 0;
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  flex-grow: 1;
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
@@ -159,6 +181,7 @@ const ProductActions = styled.div`
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: auto;
 `;
 
 const ProductLink = styled(motion.a)`
@@ -173,6 +196,9 @@ const ProductLink = styled(motion.a)`
   font-weight: 500;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  flex: 1;
+  justify-content: center;
+  min-width: 120px;
 
   &:hover {
     transform: translateY(-2px);
@@ -202,7 +228,7 @@ const StatusBadge = styled.div`
   right: 1rem;
   background: ${props => props.status === 'live' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(251, 191, 36, 0.2)'};
   color: ${props => props.status === 'live' ? '#22c55e' : '#fbbf24'};
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 500;
@@ -240,25 +266,17 @@ const NavArrow = styled(motion.button)`
   }
 
   &.left {
-    left: -25px;
+    left: 0;
   }
 
   &.right {
-    right: -25px;
+    right: 0;
   }
 
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-    
-    &.left {
-      left: -22px;
-    }
-
-    &.right {
-      right: -22px;
-    }
   }
 `;
 
@@ -361,7 +379,7 @@ function Products() {
   const scrollProducts = (direction) => {
     const container = productsGridRef.current;
     if (container) {
-      const scrollAmount = 370; // Card width + gap
+      const scrollAmount = 400; // Card width + gap
       const currentScroll = container.scrollLeft;
       const targetScroll = direction === 'left' 
         ? currentScroll - scrollAmount 

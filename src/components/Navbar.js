@@ -103,7 +103,6 @@ const MobileMenuButton = styled(motion.button)`
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 8px;

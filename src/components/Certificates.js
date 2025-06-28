@@ -32,6 +32,11 @@ const ScrollableContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding: 0 60px;
+
+  @media (max-width: 768px) {
+    padding: 0 50px;
+  }
 `;
 
 const CertificatesGrid = styled.div`
@@ -62,7 +67,11 @@ const Certificate = styled(motion.div)`
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 350px;
+  max-width: 350px;
+  height: 380px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     transform: translateY(-10px);
@@ -73,16 +82,20 @@ const Certificate = styled(motion.div)`
 
   @media (max-width: 768px) {
     min-width: 300px;
+    max-width: 300px;
+    height: 360px;
   }
 
   @media (max-width: 480px) {
     min-width: 280px;
+    max-width: 280px;
+    height: 340px;
   }
 `;
 
 const CertificateImage = styled(motion.div)`
   width: 100%;
-  height: 200px;
+  height: 180px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   display: flex;
   align-items: center;
@@ -110,45 +123,57 @@ const CertificateImage = styled(motion.div)`
 
 const CertificateContent = styled.div`
   padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 768px) {
     padding: 1.5rem;
   }
+
+  @media (max-width: 480px) {
+    padding: 1.2rem;
+  }
 `;
 
 const CertificateTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #fff;
   margin: 0 0 1rem 0;
   font-weight: 600;
+  line-height: 1.3;
 
   @media (max-width: 768px) {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 `;
 
 const CertificateIssuer = styled.p`
   color: #888;
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
+  line-height: 1.4;
 `;
 
 const CertificateDate = styled.span`
   color: #666;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: block;
 `;
 
 const CertificateBadge = styled.div`
   display: inline-block;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 500;
-  margin-top: 1rem;
+  margin-top: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  align-self: flex-start;
 `;
 
 const NavArrow = styled(motion.button)`
@@ -182,25 +207,17 @@ const NavArrow = styled(motion.button)`
   }
 
   &.left {
-    left: -25px;
+    left: 0;
   }
 
   &.right {
-    right: -25px;
+    right: 0;
   }
 
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-    
-    &.left {
-      left: -22px;
-    }
-
-    &.right {
-      right: -22px;
-    }
   }
 `;
 

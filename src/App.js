@@ -83,10 +83,10 @@ const Section = styled(motion.section)`
   align-items: center;
   overflow: hidden;
   transform-origin: center center;
-  padding: 0 1rem;
+  padding: 4rem 1rem;
 
   @media (max-width: 768px) {
-    padding: 0 0.5rem;
+    padding: 3rem 0.5rem;
   }
 `;
 
@@ -264,6 +264,11 @@ const ScrollableContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+  padding: 0 60px;
+
+  @media (max-width: 768px) {
+    padding: 0 50px;
+  }
 `;
 
 const ProjectGrid = styled.div`
@@ -293,8 +298,12 @@ const ProjectCard = styled(motion.div)`
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  min-width: 350px;
+  min-width: 380px;
+  max-width: 380px;
+  height: 320px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
   
   &:hover {
     transform: translateY(-10px);
@@ -307,21 +316,29 @@ const ProjectCard = styled(motion.div)`
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: #fff;
+    font-weight: 600;
   }
 
   p {
     color: #888;
     line-height: 1.6;
     margin-bottom: 1.5rem;
+    flex-grow: 1;
+    font-size: 0.95rem;
   }
 
   @media (max-width: 768px) {
     padding: 1.5rem;
-    min-width: 300px;
+    min-width: 320px;
+    max-width: 320px;
+    height: 300px;
   }
 
   @media (max-width: 480px) {
     min-width: 280px;
+    max-width: 280px;
+    height: 280px;
+    padding: 1.2rem;
   }
 `;
 
@@ -373,26 +390,34 @@ const NavArrow = styled(motion.button)`
   }
 
   &.left {
-    left: -25px;
+    left: 0;
   }
 
   &.right {
-    right: -25px;
+    right: 0;
   }
 
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-    
-    &.left {
-      left: -22px;
-    }
-
-    &.right {
-      right: -22px;
-    }
   }
+`;
+
+const TechTags = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+`;
+
+const TechTag = styled.span`
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 function App() {
@@ -430,7 +455,7 @@ function App() {
           opacity: 1,
           y: 0,
           duration: 1.2,
-          ease: "power3.out",
+          ease: "power2.out",
           scrollTrigger: {
             trigger: section,
             start: "top 80%",
@@ -456,7 +481,7 @@ function App() {
           opacity: 1,
           duration: 0.8,
           stagger: 0.15,
-          ease: "power3.out",
+          ease: "power2.out",
           scrollTrigger: {
             trigger: projectsRef.current,
             start: "top 70%",
@@ -477,7 +502,7 @@ function App() {
   const scrollProjects = (direction) => {
     const container = projectsRef.current;
     if (container) {
-      const scrollAmount = 370; // Card width + gap
+      const scrollAmount = 400; // Card width + gap
       const currentScroll = container.scrollLeft;
       const targetScroll = direction === 'left' 
         ? currentScroll - scrollAmount 
@@ -620,22 +645,13 @@ function App() {
                   >
                     <h3>{project.title}</h3>
                     <p>{project.description}</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <TechTags>
                       {project.tech.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          style={{
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            padding: '0.3rem 0.8rem',
-                            borderRadius: '15px',
-                            fontSize: '0.8rem',
-                            color: '#fff'
-                          }}
-                        >
+                        <TechTag key={techIndex}>
                           {tech}
-                        </span>
+                        </TechTag>
                       ))}
-                    </div>
+                    </TechTags>
                   </ProjectCard>
                 ))}
               </ProjectGrid>
