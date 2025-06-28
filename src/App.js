@@ -260,26 +260,28 @@ const ProjectsContainer = styled.div`
   }
 `;
 
-const ProjectGridWrapper = styled.div`
+const ScrollableContainer = styled.div`
   position: relative;
+  width: 100%;
   overflow: hidden;
-  border-radius: 20px;
 `;
 
 const ProjectGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  display: flex;
   gap: 2rem;
-  transition: transform 0.3s ease;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
   
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  @media (max-width: 768px) {
+    gap: 1.5rem;
   }
 `;
 
@@ -291,6 +293,8 @@ const ProjectCard = styled(motion.div)`
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
+  min-width: 350px;
+  flex-shrink: 0;
   
   &:hover {
     transform: translateY(-10px);
@@ -313,6 +317,11 @@ const ProjectCard = styled(motion.div)`
 
   @media (max-width: 768px) {
     padding: 1.5rem;
+    min-width: 300px;
+  }
+
+  @media (max-width: 480px) {
+    min-width: 280px;
   }
 `;
 
@@ -333,18 +342,10 @@ const SectionTitle = styled(motion.h2)`
   }
 `;
 
-const NavigationControls = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  
-  @media (max-width: 768px) {
-    margin-top: 1.5rem;
-  }
-`;
-
-const NavButton = styled(motion.button)`
+const NavArrow = styled(motion.button)`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
@@ -357,64 +358,40 @@ const NavButton = styled(motion.button)`
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(10px);
   
   &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-50%) scale(1.1);
   }
   
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
+  }
+
+  &.left {
+    left: -25px;
+  }
+
+  &.right {
+    right: -25px;
   }
 
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
     font-size: 1rem;
-  }
-`;
+    
+    &.left {
+      left: -22px;
+    }
 
-const ViewAllButton = styled(motion.button)`
-  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
-  color: #000;
-  border: none;
-  border-radius: 25px;
-  padding: 0.8rem 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin: 0 1rem;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.9rem;
-  }
-`;
-
-const ProgressIndicator = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-`;
-
-const ProgressDot = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: ${props => props.active ? '#fff' : 'rgba(255, 255, 255, 0.3)'};
-  transition: all 0.3s ease;
-  cursor: pointer;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.6);
+    &.right {
+      right: -22px;
+    }
   }
 `;
 
@@ -494,6 +471,22 @@ function App() {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollProjects = (direction) => {
+    const container = projectsRef.current;
+    if (container) {
+      const scrollAmount = 370; // Card width + gap
+      const currentScroll = container.scrollLeft;
+      const targetScroll = direction === 'left' 
+        ? currentScroll - scrollAmount 
+        : currentScroll + scrollAmount;
+      
+      container.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -606,14 +599,22 @@ function App() {
             >
               Featured Projects
             </SectionTitle>
-            <ProjectGridWrapper>
+            <ScrollableContainer>
+              <NavArrow
+                className="left"
+                onClick={() => scrollProjects('left')}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                ←
+              </NavArrow>
               <ProjectGrid ref={projectsRef}>
-                {projects.slice(0, 3).map((project, index) => (
+                {projects.map((project, index) => (
                   <ProjectCard
                     key={index}
                     initial={{ y: 50, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                     whileHover={{ y: -10 }}
                   >
@@ -638,19 +639,15 @@ function App() {
                   </ProjectCard>
                 ))}
               </ProjectGrid>
-            </ProjectGridWrapper>
-            <NavigationControls>
-              <ViewAllButton
-                whileHover={{ scale: 1.05 }}
+              <NavArrow
+                className="right"
+                onClick={() => scrollProjects('right')}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  // This would typically open a modal or navigate to a projects page
-                  alert('View all projects functionality would be implemented here');
-                }}
               >
-                View All Projects ({projects.length})
-              </ViewAllButton>
-            </NavigationControls>
+                →
+              </NavArrow>
+            </ScrollableContainer>
           </ProjectsContainer>
         </ProjectsSection>
 
