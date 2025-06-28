@@ -2,52 +2,117 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
-const CertificatesSection = styled(motion.section)`
-  min-height: 100vh;
-  padding: 100px 2rem;
-  background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const CertificatesContainer = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+`;
+
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #fff 0%, #888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const CertificatesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
-  width: 100%;
-  margin-top: 3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `;
 
 const Certificate = styled(motion.div)`
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  padding: 2rem;
+  overflow: hidden;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
 `;
 
-const CertificateImage = styled(motion.img)`
+const CertificateImage = styled(motion.div)`
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 10px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  }
+
+  @media (max-width: 768px) {
+    height: 150px;
+    font-size: 2.5rem;
+  }
+`;
+
+const CertificateContent = styled.div`
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
 `;
 
 const CertificateTitle = styled.h3`
   font-size: 1.5rem;
   color: #fff;
-  margin: 0;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const CertificateIssuer = styled.p`
   color: #888;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 const CertificateDate = styled.span`
@@ -55,80 +120,108 @@ const CertificateDate = styled.span`
   font-size: 0.9rem;
 `;
 
+const CertificateBadge = styled.div`
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
 const certificates = [
   {
     id: 1,
-    title: 'Web Development Bootcamp',
-    issuer: 'Udemy',
+    title: 'Full Stack Web Development',
+    issuer: 'The Complete Web Developer Course',
     date: 'March 2023',
-    image: 'https://via.placeholder.com/300x150',
+    icon: '🎓',
+    type: 'Certification',
   },
   {
     id: 2,
     title: 'Machine Learning Specialization',
-    issuer: 'Coursera',
+    issuer: 'Stanford University - Coursera',
     date: 'June 2023',
-    image: 'https://via.placeholder.com/300x150',
+    icon: '🤖',
+    type: 'Specialization',
   },
   {
     id: 3,
     title: 'React Native Development',
-    issuer: 'Udemy',
+    issuer: 'Meta - Professional Certificate',
     date: 'September 2023',
-    image: 'https://via.placeholder.com/300x150',
+    icon: '📱',
+    type: 'Professional Certificate',
+  },
+  {
+    id: 4,
+    title: 'AWS Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: 'December 2023',
+    icon: '☁️',
+    type: 'Cloud Certification',
+  },
+  {
+    id: 5,
+    title: 'UI/UX Design Fundamentals',
+    issuer: 'Google UX Design Certificate',
+    date: 'February 2024',
+    icon: '🎨',
+    type: 'Design Certificate',
+  },
+  {
+    id: 6,
+    title: 'JavaScript Algorithms',
+    issuer: 'freeCodeCamp',
+    date: 'May 2024',
+    icon: '⚡',
+    type: 'Programming Certificate',
   },
 ];
 
 function Certificates() {
   return (
-    <CertificatesSection
-      id="certificates"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      viewport={{ once: true }}
-    >
-      <motion.h2
-        initial={{ y: 50, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
+    <CertificatesContainer>
+      <SectionTitle
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        style={{
-          fontSize: '4rem',
-          fontWeight: 700,
-          marginBottom: '2rem',
-          background: 'linear-gradient(90deg, #fff 0%, #888 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
       >
-        My Certificates
-      </motion.h2>
+        Certificates & Achievements
+      </SectionTitle>
+      
       <CertificatesGrid>
-        {certificates.map((cert) => (
+        {certificates.map((cert, index) => (
           <Certificate
             key={cert.id}
-            whileHover={{ y: -10, scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
             viewport={{ once: true }}
+            whileHover={{ y: -10 }}
           >
             <CertificateImage
-              src={cert.image}
-              alt={cert.title}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-            />
-            <CertificateTitle>{cert.title}</CertificateTitle>
-            <CertificateIssuer>{cert.issuer}</CertificateIssuer>
-            <CertificateDate>{cert.date}</CertificateDate>
+            >
+              {cert.icon}
+            </CertificateImage>
+            <CertificateContent>
+              <CertificateTitle>{cert.title}</CertificateTitle>
+              <CertificateIssuer>{cert.issuer}</CertificateIssuer>
+              <CertificateDate>{cert.date}</CertificateDate>
+              <CertificateBadge>{cert.type}</CertificateBadge>
+            </CertificateContent>
           </Certificate>
         ))}
       </CertificatesGrid>
-    </CertificatesSection>
+    </CertificatesContainer>
   );
 }
 
-export default Certificates; 
+export default Certificates;
