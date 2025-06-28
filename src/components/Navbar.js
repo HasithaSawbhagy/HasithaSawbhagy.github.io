@@ -108,13 +108,24 @@ const MobileMenuButton = styled(motion.button)`
   padding: 0.5rem;
   border-radius: 8px;
   transition: background 0.3s ease;
+  z-index: 1001;
+  position: relative;
 
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
 
+  &:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
   @media (max-width: 968px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
   }
 `;
 
@@ -127,6 +138,7 @@ const MobileMenu = styled(motion.div)`
   backdrop-filter: blur(20px);
   padding: 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 999;
   
   @media (min-width: 969px) {
     display: none;
@@ -160,13 +172,36 @@ const MobileNavLink = styled(motion.a)`
   }
 `;
 
-const ActiveIndicator = styled(motion.div)`
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #fff 0%, #888 100%);
-  border-radius: 1px;
+const BurgerIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 16px;
+  position: relative;
+
+  span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+
+    &:nth-child(1) {
+      transform: ${props => props.$isOpen ? 'rotate(45deg) translate(5px, 5px)' : 'rotate(0)'};
+    }
+
+    &:nth-child(2) {
+      opacity: ${props => props.$isOpen ? '0' : '1'};
+      transform: ${props => props.$isOpen ? 'translateX(20px)' : 'translateX(0)'};
+    }
+
+    &:nth-child(3) {
+      transform: ${props => props.$isOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'rotate(0)'};
+    }
+  }
 `;
 
 function Navbar() {
@@ -200,6 +235,31 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('nav')) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const sections = [
     { title: 'Home', id: 'home' },
     { title: 'About', id: 'about' },
@@ -220,6 +280,11 @@ function Navbar() {
       });
       setIsOpen(false);
     }
+  };
+
+  const toggleMenu = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -253,10 +318,16 @@ function Navbar() {
             ))}
           </NavLinks>
           <MobileMenuButton
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleMenu}
             whileTap={{ scale: 0.95 }}
+            aria-label="Toggle mobile menu"
+            aria-expanded={isOpen}
           >
-            {isOpen ? '✕' : '☰'}
+            <BurgerIcon $isOpen={isOpen}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </BurgerIcon>
           </MobileMenuButton>
         </NavContainer>
       </Nav>
