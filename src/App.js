@@ -415,21 +415,21 @@ function App() {
             <HeroTitle
               initial={{ y: 80, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 1, ease: "power3.out" }}
+              transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
             >
               Hasitha Saubhagya
             </HeroTitle>
             <HeroSubtitle
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8, ease: "power3.out" }}
+              transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
             >
               Full-Stack Developer & UI/UX Designer crafting digital experiences with passion and precision
             </HeroSubtitle>
             <HeroButtons
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.8, ease: "power3.out" }}
+              transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
             >
               <HeroButton
                 className="primary"

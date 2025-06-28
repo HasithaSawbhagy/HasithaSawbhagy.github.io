@@ -8,7 +8,7 @@ const Nav = styled(motion.nav)`
   left: 0;
   right: 0;
   height: 80px;
-  background: ${props => props.scrolled ? 'rgba(0, 0, 0, 0.95)' : 'rgba(0, 0, 0, 0.8)'};
+  background: ${props => props.$scrolled ? 'rgba(0, 0, 0, 0.95)' : 'rgba(0, 0, 0, 0.8)'};
   backdrop-filter: blur(20px);
   display: flex;
   justify-content: center;
@@ -227,8 +227,8 @@ function Navbar() {
       <Nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "power3.out" }}
-        scrolled={scrolled}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        $scrolled={scrolled}
       >
         <NavContainer>
           <Logo
