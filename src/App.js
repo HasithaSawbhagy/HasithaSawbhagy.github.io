@@ -249,25 +249,37 @@ const ScrollIndicator = styled(motion.div)`
   }
 `;
 
+const ProjectsContainer = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 2rem;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+`;
+
+const ProjectGridWrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+`;
+
 const ProjectGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  width: 100%;
-
+  transition: transform 0.3s ease;
+  
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    padding: 1rem;
   }
 
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
     gap: 1rem;
-    padding: 0.5rem;
   }
 `;
 
@@ -318,6 +330,91 @@ const SectionTitle = styled(motion.h2)`
 
   @media (max-width: 768px) {
     margin-bottom: 2rem;
+  }
+`;
+
+const NavigationControls = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 768px) {
+    margin-top: 1.5rem;
+  }
+`;
+
+const NavButton = styled(motion.button)`
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+  }
+`;
+
+const ViewAllButton = styled(motion.button)`
+  background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+  color: #000;
+  border: none;
+  border-radius: 25px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0 1rem;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+`;
+
+const ProgressIndicator = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+`;
+
+const ProgressDot = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${props => props.active ? '#fff' : 'rgba(255, 255, 255, 0.3)'};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
   }
 `;
 
@@ -400,6 +497,39 @@ function App() {
     }
   };
 
+  const projects = [
+    {
+      title: "E-Commerce Platform",
+      description: "A modern, responsive e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, payment integration, and admin dashboard.",
+      tech: ["React", "Node.js", "MongoDB", "Stripe"]
+    },
+    {
+      title: "Task Management App",
+      description: "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
+      tech: ["React", "Socket.io", "Express", "PostgreSQL"]
+    },
+    {
+      title: "Portfolio Website",
+      description: "A stunning portfolio website with smooth animations, responsive design, and optimized performance. Built with modern web technologies.",
+      tech: ["React", "GSAP", "Styled Components", "Framer Motion"]
+    },
+    {
+      title: "Weather Dashboard",
+      description: "Real-time weather application with location-based forecasts, interactive maps, and detailed analytics for weather patterns.",
+      tech: ["React", "Weather API", "Chart.js", "Mapbox"]
+    },
+    {
+      title: "Social Media App",
+      description: "Full-featured social media platform with real-time messaging, post sharing, and advanced user interaction features.",
+      tech: ["React Native", "Firebase", "Redux", "Socket.io"]
+    },
+    {
+      title: "Learning Management System",
+      description: "Comprehensive LMS with course management, progress tracking, video streaming, and interactive assessments.",
+      tech: ["Next.js", "Prisma", "PostgreSQL", "AWS S3"]
+    }
+  ];
+
   return (
     <>
       <GlobalStyle />
@@ -467,61 +597,61 @@ function App() {
         </SkillsSection>
 
         <ProjectsSection ref={projectsSectionRef} id="projects">
-          <SectionTitle
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            Featured Projects
-          </SectionTitle>
-          <ProjectGrid ref={projectsRef}>
-            {[
-              {
-                title: "E-Commerce Platform",
-                description: "A modern, responsive e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, payment integration, and admin dashboard.",
-                tech: ["React", "Node.js", "MongoDB", "Stripe"]
-              },
-              {
-                title: "Task Management App",
-                description: "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-                tech: ["React", "Socket.io", "Express", "PostgreSQL"]
-              },
-              {
-                title: "Portfolio Website",
-                description: "A stunning portfolio website with smooth animations, responsive design, and optimized performance. Built with modern web technologies.",
-                tech: ["React", "GSAP", "Styled Components", "Framer Motion"]
-              }
-            ].map((project, index) => (
-              <ProjectCard
-                key={index}
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+          <ProjectsContainer>
+            <SectionTitle
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              Featured Projects
+            </SectionTitle>
+            <ProjectGridWrapper>
+              <ProjectGrid ref={projectsRef}>
+                {projects.slice(0, 3).map((project, index) => (
+                  <ProjectCard
+                    key={index}
+                    initial={{ y: 50, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -10 }}
+                  >
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      {project.tech.map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            padding: '0.3rem 0.8rem',
+                            borderRadius: '15px',
+                            fontSize: '0.8rem',
+                            color: '#fff'
+                          }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </ProjectCard>
+                ))}
+              </ProjectGrid>
+            </ProjectGridWrapper>
+            <NavigationControls>
+              <ViewAllButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  // This would typically open a modal or navigate to a projects page
+                  alert('View all projects functionality would be implemented here');
+                }}
               >
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {project.tech.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        padding: '0.3rem 0.8rem',
-                        borderRadius: '15px',
-                        fontSize: '0.8rem',
-                        color: '#fff'
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </ProjectCard>
-            ))}
-          </ProjectGrid>
+                View All Projects ({projects.length})
+              </ViewAllButton>
+            </NavigationControls>
+          </ProjectsContainer>
         </ProjectsSection>
 
         <CertificatesSection ref={certificatesSectionRef} id="certificates">
